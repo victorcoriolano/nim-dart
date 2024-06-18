@@ -5,36 +5,46 @@ export 'package:package/util/tools.dart';
 export 'package:package/util/strings.dart';
 export 'package:enough_ascii_art/enough_ascii_art.dart';
 Ascii ascii = Ascii(urlImage: 'lib/images/unnamed.gif');
+//arquivo util para uso de métodos reutilizáveis ou então escrever menos código.
 
+//método que imprime o menu inicial.
 void menuInicial(){
   ascii.printAscii();
   print(st.boasVindas);
   return;
 }
 
+//método que le o valor digitado pelo usuário.
 int lerNumeroPalitos(int min, int max){
   while(true){
     try{
-      String inputText = stdin.readLineSync() ?? '0';
-      if(int.parse(inputText) < min || int.parse(inputText) > max && int.parse(inputText) != 0){
+      //tratamento do input
+      String? inputText = stdin.readLineSync() ?? '';
+      int playerInput = int.tryParse(inputText) ?? 0;
+      //tratamento de erros
+      if(playerInput < min || playerInput > max){
         print(st.minMaxInvalido);
         continue;
-      }else if(int.parse(inputText) == 0){
+      }else if(playerInput == 0){
         print(st.valorNulo);
         continue;
       }else{
-        return int.parse(inputText);
+        //retorna a jogada se válida
+        return playerInput;
       }
     }on FormatException{
+      //retorna a tentar se for inválido
       print(st.formatoInvalido);
       continue;
     }catch(e){
+      //retorna a tentar de qualquer forma
       print(st.valorNulo);
       continue;
     }
   }
 }
 
+//método para imprimir a quantidade de palitos visualmente.
 void imprimirQuantidade(int quantidadeAtual){
   print('');
   print("''''''''''''''''''''''''''''''''''''");
@@ -69,6 +79,3 @@ void imprimirQuantidadePadrao(int qtdPadrao){
   }
   print("''''''''''''''''''''''''''''''''''''");
 }
-
-
-

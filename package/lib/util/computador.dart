@@ -1,55 +1,46 @@
 import 'dart:math';
 
 class Computador {
+  //atributos
+  String? nickname;
   int maxRetirar;
+  //construtor
   Computador({required this.maxRetirar});
-
+  //metodos
   int jogar(int qtdPalitos) {
-    int jogadaAleatoria = Random().nextInt(maxRetirar) + 1;
-    if(qtdPalitos - jogadaAleatoria == 0 && qtdPalitos > 0 && jogadaAleatoria > 1) {
+    int jogadaAleatoria = Random().nextInt(maxRetirar) + 1; // random entre 1 e o atributo máximo dado na construção
+    //evita o computador de perder o jogo personalizado e se possível ganhar
+    if(qtdPalitos - jogadaAleatoria == 0 && qtdPalitos > 1 && jogadaAleatoria > 1) {
       return jogadaAleatoria - 1;
     }
+    //se não é o caso da condição acima, o computador pode jogar normalmente
     if(jogadaAleatoria > 0 && jogadaAleatoria <= qtdPalitos) {
       return jogadaAleatoria;
-    }else {
+    } //retorna a tentar de qualquer forma
+    else {
       return jogar(qtdPalitos);
     }
   }
 
   int escolherFileira(Map<int, List<String>> rowsGame) {
-    int jogadaAleatoria = Random().nextInt(4) + 1;
-    if(jogadaAleatoria > 0 && jogadaAleatoria <= 4 && rowsGame[jogadaAleatoria]!.isNotEmpty) {
+    int jogadaAleatoria = Random().nextInt(4) + 1; //entre 1 e 4
+    if(rowsGame[jogadaAleatoria]!.isNotEmpty && rowsGame[jogadaAleatoria]!=null) {
+      if(rowsGame[jogadaAleatoria] == [' 📍\n']) {
+        //tenta escolher outra fileira se a escolhida só tiver um palito sobrando
+        try{
+        escolherFileira(rowsGame);
+        } catch(e) {
+          // se as outras forem inválidas, retorna a jogada aleatória
+          return jogadaAleatoria;
+        }
+      }
       return jogadaAleatoria;
-    } 
-    else {
-      return escolherFileira(rowsGame);
     }
+    return escolherFileira(rowsGame);
   }
 
   int jogarPorFileira(Map<int, List<String>> rowsGame, int fileira) {
-    //////////////////////////
-    //Lógica abandonada:
-    // List<int> soma;
-    // List<String> rowsClone = List.from(rowsGame[fileira]!);
-    //substitui os palitos por 1 e depois soma-os
-    // rowsClone[fileira].replaceRange(0, rowsClone[fileira].length-1, '1');
-    // soma = List.generate(rowsClone[fileira].length, (index) => (int.parse(rowsClone[fileira])));
-    //verifica se a próxima jogada é perdedora, se sim refaz o processo, se não retorna a jogada      
-    // if (soma.reduce((value, element) => value + element) - jogadaAleatoria == 0) {return jogar()}
-    //////////////////////////
-    ///Lógica abandonada temporariamente
-        // if(rowsGame[fileira]![0] == '📍\n'){
-        //   try{
-        //     return jogarPorFileira(rowsGame, escolherFileira(rowsGame));
-        //   }
-        //   catch(e){
-        //     return jogadaAleatoria;
-        //   }
-        // } else if(rowsGame[fileira]![1] == '📍\n'){
-        //   return 1;
-        // }
-      //////////////////////////
-    int jogadaAleatoria = Random().nextInt(rowsGame[fileira]!.length) + 1;
+    int jogadaAleatoria = Random().nextInt(rowsGame[fileira]!.length) + 1; //entre 1 e o numero de disponiveis
       if(jogadaAleatoria > 0 && jogadaAleatoria <= rowsGame[fileira]!.length && jogadaAleatoria <= maxRetirar) {
         return jogadaAleatoria;
       //se não é um valor válido refaz a análise
