@@ -121,7 +121,7 @@ class Game{
             String? lerFileira = stdin.readLineSync() ?? 0.toString();
             int fileira = lerFileira.isEmpty ? 0 : int.parse(lerFileira);
             //Retorna se a fileira ou resposta for inválida
-            if(fileira == 0 || fileira > 4){
+            if(fileira < 1 || fileira > 4){
               print(st.opcaoInvalida);
               continue;
             }
@@ -130,15 +130,13 @@ class Game{
             String? lerRetirar = stdin.readLineSync() ?? 0.toString();
             int retirar = lerRetirar.isEmpty ? 0 : int.parse(lerRetirar);
             //Retorna se o palito ou resposta for inválida
-            if(retirar == 0 || retirar > rowsGame[fileira]!.length || retirar > qtdPalitos){
+            if(retirar < 1 || retirar > rowsGame[fileira]!.length || retirar > qtdPalitos){
               print(st.opcaoInvalida);
               continue;
             }
             //Retira os palitos da fileira e verifica se o jogo acabou
             qtdPalitos -= retirar;
-            for(int i = 0; i < retirar; i++){
-              rowsGame[fileira]!.removeAt(0);
-            }
+            rowsGame[fileira]!.removeRange(0, retirar);
             if(qtdPalitos == 0){
               print(st.vitoriaJogador);
               print('${jogador2.nickname} venceu o jogo!');
@@ -150,23 +148,21 @@ class Game{
               print('${jogador2.nickname}, Qual fileira você quer jogar? (1, 2, 3 ou 4)');
               String? lerFileira = stdin.readLineSync() ?? 0.toString();
               int fileira = lerFileira.isEmpty ? 0 : int.parse(lerFileira);
-              if(fileira == 0 || fileira > 4){
+              if(fileira < 1 || fileira > 4){
                 print(st.opcaoInvalida);
                 continue;
               }
               print('Quantos palitos deseja retirar? (1 a ${rowsGame[fileira]!.length})');
               String? lerRetirar = stdin.readLineSync() ?? 0.toString();
               int retirar = lerRetirar.isEmpty ? 0 : int.parse(lerRetirar);
-              if(retirar == 0 || retirar > rowsGame[fileira]!.length || retirar > qtdPalitos){
+              if(retirar < 1 || retirar > rowsGame[fileira]!.length || retirar > qtdPalitos){
                 print(st.opcaoInvalida);
                 continue;
               }
+              //Retira os palitos da fileira e verifica se o jogo acabou
+              qtdPalitos -= retirar;
+              rowsGame[fileira]!.removeRange(0, retirar);
               break;
-            }
-            //Retira os palitos da fileira e verifica se o jogo acabou
-            qtdPalitos -= retirar;
-            for(int i = 0; i < retirar; i++){
-              rowsGame[fileira]!.removeAt(0);
             }
             if(qtdPalitos == 0){
               print(st.vitoriaJogador);
@@ -190,12 +186,12 @@ class Game{
           String? inputName = stdin.readLineSync() ?? 'Jogador1';
           String j1nickname = inputName.isEmpty ? 'Jogador1' : inputName;
           print(st.jogadaMaxima);
-          maxRetirar1 = tools.lerNumeroPalitos(1, 5);
+          maxRetirar1 = tools.lerNumeroPalitos(3, 5);
           print('Insira o nome do segundo jogador, ou deixe em branco para usar "Jogador2".');
           String? inputName2 = stdin.readLineSync() ?? 'Jogador2';
           String j2nickname = inputName2.isEmpty ? 'Jogador2' : inputName2;
           print(st.jogadaMaxima);
-          maxRetirar2 = tools.lerNumeroPalitos(1, 5);
+          maxRetirar2 = tools.lerNumeroPalitos(3, 5);
           //Verifica paridade de nomes
           if(j1nickname == j2nickname){
             j1nickname += ' 1';
@@ -261,7 +257,7 @@ class Game{
     //Retorna ao Try.
     }catch(e){
       print(e);
-      print('Erro inesperado. Recomeçando...');
+      print(st.erroInesperado);
       print('');
       jogoHumanoVsHumano();
     }
@@ -310,7 +306,7 @@ class Game{
           print('${jogador1.nickname}, Qual fileira você quer jogar? (1, 2, 3 ou 4)');
           String? lerFileira = stdin.readLineSync() ?? '';
           int fileira = lerFileira.isEmpty ? 0 : int.parse(lerFileira);
-          if(fileira == 0 || fileira > 4){
+          if(fileira < 1 || fileira > 4){
             print(st.opcaoInvalida);
             continue;
           }
@@ -318,15 +314,13 @@ class Game{
           print('Quantos palitos deseja retirar? (1 a ${rowsGame[fileira]!.length})');
           String? lerRetirar = stdin.readLineSync() ?? '';
           int retirar = lerRetirar.isEmpty ? 0 : int.parse(lerRetirar);
-          if(retirar == 0 || retirar > rowsGame[fileira]!.length || retirar > qtdPalitos){
+          if(retirar < 1 || retirar > rowsGame[fileira]!.length || retirar > qtdPalitos){
             print(st.opcaoInvalida);
             continue;
           }
           //retira-se os palitos do jogo e se o jogo terminar, o vencedor e o computador
           qtdPalitos -= retirar;
-          for(int i = 0; i < retirar; i++){
-            rowsGame[fileira]!.removeAt(0);
-          }
+          rowsGame[fileira]!.removeRange(0, retirar);
           if(qtdPalitos == 0){
             print(st.vitoriaCpu);
             print('Desculpe, mas o computador venceu o jogo!');
@@ -341,9 +335,7 @@ class Game{
           print('O computador retirou + $retirar');
           //retira-se os palitos do jogo e se o jogo terminar, o vencedor e o jogador
           qtdPalitos -= retirar;
-          for(int i = 0; i < retirar; i++){
-            rowsGame[fileira]!.removeAt(0);
-          }
+          rowsGame[fileira]!.removeRange(0, retirar);
           if(qtdPalitos == 0){
             print(st.vitoriaJogador);
             print('${jogador1.nickname} venceu o jogo!');
@@ -357,18 +349,18 @@ class Game{
       case 2:
           asciiTool.asciiNovoJogo();
           print(st.opcaoPersonalizada);
-          final int maxRetirar1;
-          final int maxRetirar2;
+          int maxRetirar1;
+          int maxRetirar2;
           //Insere-se nome do jogador humano e quantidade de jogadas dos jogadores
           print('Insira o nome do jogador humano.');
           String? input = stdin.readLineSync() ?? '';
           String j1nickname = input.isEmpty ? 'Jogador1' : input;
           print('Insira a SUA jogada máxima.');
           print(st.jogadaMaxima);
-          maxRetirar1 = tools.lerNumeroPalitos(1, 5);
+          maxRetirar1 = tools.lerNumeroPalitos(3, 5);
           print('Insira a jogada máxima DO COMPUTADOR.');
           print(st.jogadaMaxima);
-          maxRetirar2 = tools.lerNumeroPalitos(1, 5);
+          maxRetirar2 = tools.lerNumeroPalitos(3, 5);
           //Instanciação
           Humano jogador1 = Humano(maxRetirar: maxRetirar1);
           Computador computador1 = Computador(maxRetirar: maxRetirar2);
@@ -399,7 +391,7 @@ class Game{
             print('Vez do computador.');
             print('O computador está pensando..');
             player2desk = computador1.jogar(qtdPalitos);
-            print('O computador retirou + $player2desk');
+            print('O computador retirou - $player2desk');
             qtdPalitos -= player2desk;
             if(qtdPalitos == 0){
               print(st.vitoriaJogador);
@@ -423,7 +415,7 @@ class Game{
     //Retorna ao Try
     }catch(e){
       print(e);
-      print('Erro inesperado. Recomeçando...');
+      print(st.erroInesperado);
       print('');
       jogoHumanoVsCpu();
     }
@@ -496,9 +488,7 @@ class Game{
           print('O computador $cpu1nome retirou - $retirar da fileira $fileira');
           //atualiza valores, retira palitos e verifica se o jogo acabou
           qtdPalitos -= retirar;
-          for(int i = 0; i < retirar; i++){
-            rowsGame[fileira]!.removeAt(0);
-          }
+          rowsGame[fileira]!.removeRange(0, retirar);
           if(qtdPalitos == 0){
             print(st.vitoriaCpu);
             print('$cpu2nome venceu o jogo!');
@@ -513,9 +503,7 @@ class Game{
           print('O computador $cpu2nome retirou - $retirar da fileira $fileira');
           //atualiza valores, retira palitos e verifica se o jogo acabou
           qtdPalitos -= retirar;
-          for(int i = 0; i < retirar; i++){
-            rowsGame[fileira]!.removeAt(0);
-          }
+          rowsGame[fileira]!.removeRange(0, retirar);
           if(qtdPalitos == 0){
             print(st.vitoriaCpu);
             print('$cpu1nome venceu o jogo!');
@@ -599,7 +587,7 @@ class Game{
     //Erro fatal reinicializa ao Try
     }catch(e){
       print(e);
-      print('Erro inesperado. Recomeçando...');
+      print(st.erroInesperado);
       print('');
       jogoCpuVsCpu();
     }

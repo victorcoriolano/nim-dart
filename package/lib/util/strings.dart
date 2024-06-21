@@ -20,3 +20,4 @@ String pararJogo = ("Opção #3 - PARAR JOGO pressionada.\n Interrompendo jogati
 String menu = ("Opção #3 - VOLTAR AO MENU  || Opção #5 - ENCERRAR PROGRAMA \n");
 String opcaoPersonalizada = ("Opção 2 - PERSONALIZADO\n Configurando o jogo...\n Configurando o jogo... \n Configurando o jogo...\n");
 String tradOuSandbox = ("'Deseja jogar o jogo NIM padrão ou personalizado?'\n Digite 1 - Tradicional\n Digite 2 - Personalizado e Desorganizado\n");
+String erroInesperado = ('Erro inesperado.\n Tente não utilizar letras, símbolos ou espaços vazios na linha de console.\n Recomeçando...\n\n');
